@@ -56,6 +56,7 @@ userController.verifyUser = (req, res, next) => {
         const {rows} = result;
         bcrypt.compare(password, rows[0].password, (err, result) => {
           if (err) return next(err);
+          req.session.auth = { username: rows[0].username, user_id: rows[0].user_id };
           res.locals.validPassword = result;
           if (result) res.locals.userId = rows[0].user_id
           return next();
@@ -96,6 +97,17 @@ userController.updateUserPassword = (req, res, next) => {
       return next();
     });
   } catch (err) {next(err);}
+};
+
+userController.logout = (req, res, next) => {
+	req.session.destroy(function (err) {
+		if (err) {
+			res.locals =
+				'There was a problem with logging out. Please check that you are logged in.';
+			return next();
+		}
+		return next();
+	});
 };
 
 module.exports  = userController;

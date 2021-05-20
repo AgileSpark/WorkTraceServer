@@ -4,7 +4,7 @@ const sessionController = require('../controllers/sessionController');
 const userRouter = express.Router();
 
 // set cookie -> create user -> start session -> set SSID cookie
-userRouter.post('/createUser', sessionController.setCookie, userController.createUser, (req, res) => {
+userRouter.post('/createUser', userController.createUser, (req, res) => {
   console.log("Reach User Add end of middleware")
   if (res.locals.userId) {
     res.status(200).send('New User Successfully added!!!')
@@ -13,7 +13,7 @@ userRouter.post('/createUser', sessionController.setCookie, userController.creat
 })
 
 // set cookie -> check if logged In -> verify user (if not loggedin) -> start session (or renew session) - set (or renew) SSID cookie
-userRouter.get('/verifyUser', sessionController.setCookie, userController.verifyUser, (req, res) => {
+userRouter.get('/verifyUser', userController.verifyUser, (req, res) => {
   console.log("Reach Verify User end of middleware")
   console.log('statements', res.locals.validUsername, res.locals.validPassword);
   if (res.locals.validUsername === false) {
@@ -26,6 +26,16 @@ userRouter.get('/verifyUser', sessionController.setCookie, userController.verify
     res.status(200).send('Succesfully Logged-In!!!')
   }
 })
+
+userRouter.get('/checkSession', (req, res) => {
+	res.status(200).json(req.session.auth);
+});
+
+userRouter.get('/logout', userController.logout, (req, res) => {
+  res.status(200).send("Logged out");
+});
+
+
 
 // verify user -> update user password
 // userRouter.get('/updatePassword', userController.verifyUSer, userController.updateUserPassword, (req, res) => {

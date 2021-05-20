@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const cors = require('cors');
 const path = require('path');
 
@@ -18,10 +19,24 @@ app.use(express.urlencoded({extended: true}));
 // Serve static files
 app.use(express.static(path.resolve(__dirname, '../src/style.css')));
 
+// Create session cookie
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET,
+		name: 'worktrace-cookie',
+		cookie: {
+			httpOnly: true,
+			maxAge: 1 * 60 * 60 * 24 * 1000, // if not defined then session will be destroyed on condition i.e. exiting browser
+		},
+	})
+);
+
 // Routes
 app.use('/login', userRouter);
 
 app.use('/signup', userRouter);
+
+app.use('/logout', userRouter);
 
 app.use('/listings', listingRouter);
 
