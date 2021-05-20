@@ -14,7 +14,7 @@ listingRouter.post('/addListing', listingController.addListing, (req, res) => {
 })
 
 // set cookie -> check if logged In -> verify user (if not loggedin) -> start session (or renew session) - set (or renew) SSID cookie
-listingRouter.get('/getListings', listingController.getListings, (req, res) => {
+listingRouter.post('/getListings', listingController.getListings, (req, res) => {
   console.log('Made it to the get listing route')
   if (res.locals.userListings) {
     res.status(200).json({userListings: res.locals.userListings})
