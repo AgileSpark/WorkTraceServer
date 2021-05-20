@@ -24,6 +24,7 @@ userRouter.post('/verifyUser', userController.verifyUser, (req, res) => {
   }
   else if (res.locals.validUsername && res.locals.validPassword) {
     res.status(200).json({usernameVerified: res.locals.validUsername, passwordVerified: res.locals.validPassword});
+  }
 })
 
 userRouter.get('/checkSession', (req, res) => {
