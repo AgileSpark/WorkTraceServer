@@ -3,7 +3,6 @@ const listingController = require('../controllers/listingController');
 const sessionController = require('../controllers/sessionController');
 const listingRouter = express.Router();
 
-// set cookie -> create user -> start session -> set SSID cookie
 listingRouter.post('/addListing', listingController.addListing, (req, res) => {
   console.log('Made it to the end of add/listing')
   if (res.locals.addedListing) {
@@ -13,7 +12,6 @@ listingRouter.post('/addListing', listingController.addListing, (req, res) => {
   }
 })
 
-// set cookie -> check if logged In -> verify user (if not loggedin) -> start session (or renew session) - set (or renew) SSID cookie
 listingRouter.post('/getListings', listingController.getListings, (req, res) => {
   console.log('Made it to the get listing route')
   if (res.locals.userListings) {
@@ -21,7 +19,24 @@ listingRouter.post('/getListings', listingController.getListings, (req, res) => 
   } else {
     res.status(200).json({jobsNotFound: true})
   }
+})
 
+listingRouter.post('/updateStatus', listingController.updateStatus, (req, res) => {
+  console.log('Made it to the updateListing route!!')
+  if (res.locals.updatedListing) {
+    res.status(200).json({userListings: res.locals.updatedListing})
+  } else {
+    res.status(200).json({jobsNotFound: true})
+  }
+})
+
+listingRouter.post('/removeListing', listingController.removeListing, (req, res) => {
+  console.log('Made it to the updateListing route!!')
+  if (res.locals.removedListing) {
+    res.status(200).json({userListings: res.locals.removedListing})
+  } else {
+    res.status(200).json({jobsNotFound: true})
+  }
 })
 
 module.exports = listingRouter;

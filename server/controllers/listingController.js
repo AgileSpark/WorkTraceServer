@@ -47,19 +47,18 @@ listingController.addListing = (req, res, next) => {
 
 listingController.updateStatus = (req, res, next) => {
   const {listing_id, status} = req.body
-  console.log('Inputs', user_id, company, source, location, url)
-  const newListingQuery = `
-  INSERT INTO Listings (user_id, company, source, location, url)
-  VALUES ($1, $2, $3, $4, $5)
-  RETURNING *
+  console.log('Inputs', listing_id, status)
+  const updateStatusQuery = `
+  UPDATE Listings
+  SET status=${status}
+  WHERE listing_id=${listing_id}
   `
-  const values = [user_id, company, source, location, url];
   try {
-    db.query(newListingQuery, values, (err, result) => {
+    db.query(updateStatusQuery, (err, result) => {
       if (result) {
         const {rows} = result;
         console.log('Row data', rows[0])
-        res.locals.addedListing = rows[0];
+        res.locals.updatedListing = rows[0];
         return next();
       }
       else return next();
@@ -68,15 +67,21 @@ listingController.updateStatus = (req, res, next) => {
 };
 
 listingController.removeListing = (req, res, next) => {
-  const listingQuery = 
-    `SELECT ***
-    FROM ****
-    `;
+  const {listing_id} = req.body
+  console.log('Inputs', listing_id)
+  const removeListingQuery = `
+  DELETE FROM Listings
+  WHERE listing_id=${listing_id}
+  `
   try {
-    db.query(listingQuery, (err, result) => {
-      const {rows} = result;
-      res.locals.userListings = rows;
-      return next();
+    db.query(removeListingQuery, (err, result) => {
+      if (result) {
+        const {rows} = result;
+        console.log('Row data', rows[0])
+        res.locals.removedListing = rows[0];
+        return next();
+      }
+      else return next();
     });
   } catch (err) {next(err);}
 };
