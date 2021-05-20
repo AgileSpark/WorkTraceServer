@@ -52,6 +52,7 @@ listingController.updateStatus = (req, res, next) => {
   UPDATE Listings
   SET status=${status}
   WHERE listing_id=${listing_id}
+  RETURNING *
   `
   try {
     db.query(updateStatusQuery, (err, result) => {
@@ -72,6 +73,7 @@ listingController.removeListing = (req, res, next) => {
   const removeListingQuery = `
   DELETE FROM Listings
   WHERE listing_id=${listing_id}
+  RETURNING *
   `
   try {
     db.query(removeListingQuery, (err, result) => {
