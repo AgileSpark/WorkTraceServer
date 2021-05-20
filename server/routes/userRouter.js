@@ -17,17 +17,13 @@ userRouter.post('/verifyUser', userController.verifyUser, (req, res) => {
   console.log("Reach Verify User end of middleware")
   console.log('statements', res.locals.validUsername, res.locals.validPassword);
   if (res.locals.validUsername === false) {
-    // res.status(200).send('User does not exist!!')
-    res.status(200);
+    res.status(200).json({usernameVerified: res.locals.validUsername, passwordVerified: res.locals.validPassword});
   }
   else if (res.locals.validUsername && res.locals.validPassword === false) {
-    // res.status(200).send('Password is Incorrect!!')
-    res.status(200);
+    res.status(200).json({usernameVerified: res.locals.validUsername, passwordVerified: res.locals.validPassword});
   }
   else if (res.locals.validUsername && res.locals.validPassword) {
-    // res.status(200).send('Succesfully Logged-In!!!')
-    res.status(200);
-  }
+    res.status(200).json({usernameVerified: res.locals.validUsername, passwordVerified: res.locals.validPassword});
 })
 
 userRouter.get('/checkSession', (req, res) => {
