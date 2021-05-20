@@ -40,4 +40,4 @@ app.use((err, req, res, next) => {
 })
 
 // Listen on PORT
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+app.listen(process.env.PORT || PORT, () => console.log(`Listening on port ${PORT} or ${process.env.PORT} if Heroku`));
