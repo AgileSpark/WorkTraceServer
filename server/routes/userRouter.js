@@ -32,7 +32,7 @@ userRouter.get('/checkSession', (req, res) => {
 });
 
 userRouter.get('/logout', userController.logout, (req, res) => {
-  res.status(200).send("Logged out");
+  res.status(200).json({userLoginStatus: false});
 });
 
 
