@@ -13,7 +13,7 @@ userRouter.post('/createUser', userController.createUser, (req, res) => {
 })
 
 // set cookie -> check if logged In -> verify user (if not loggedin) -> start session (or renew session) - set (or renew) SSID cookie
-userRouter.get('/verifyUser', userController.verifyUser, (req, res) => {
+userRouter.post('/verifyUser', userController.verifyUser, (req, res) => {
   console.log("Reach Verify User end of middleware")
   console.log('statements', res.locals.validUsername, res.locals.validPassword);
   if (res.locals.validUsername === false) {
