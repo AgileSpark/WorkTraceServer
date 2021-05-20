@@ -7,9 +7,9 @@ const userRouter = express.Router();
 userRouter.post('/createUser', userController.createUser, (req, res) => {
   console.log("Reach User Add end of middleware")
   if (res.locals.userId) {
-    res.status(200).send('New User Successfully added!!!')
+    res.status(200).json({userCreated: true})
   }
-  else res.status(200).send('Username is already taken. Please try again!')
+  else res.status(200).json({userCreated: false})
 })
 
 // set cookie -> check if logged In -> verify user (if not loggedin) -> start session (or renew session) - set (or renew) SSID cookie
