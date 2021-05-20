@@ -36,8 +36,6 @@ app.use('/login', userRouter);
 
 app.use('/signup', userRouter);
 
-app.use('/logout', userRouter);
-
 app.use('/listings', listingRouter);
 
 // Unknown Routes and Global error handlers

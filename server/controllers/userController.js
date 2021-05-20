@@ -49,6 +49,7 @@ userController.verifyUser = (req, res, next) => {
   FROM Users
   WHERE username='${username}'
   `
+  console.log('login attempt', username, password);
   try {
     db.query(verifyUserQuery, (err, result) => {
       if (result.rows.length > 0) {
