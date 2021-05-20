@@ -49,24 +49,21 @@ userController.verifyUser = (req, res, next) => {
   FROM Users
   WHERE username='${username}'
   `
-  console.log("made it here!!!")
   try {
     db.query(verifyUserQuery, (err, result) => {
-      if (result) {
+      if (result.rows.length > 0) {
         res.locals.validUsername = true;
         const {rows} = result;
-        console.log(rows);
         bcrypt.compare(password, rows[0].password, (err, result) => {
           if (err) return next(err);
-          console.log('compared', result)
           res.locals.validPassword = result;
+          if (result) res.locals.userId = rows[0].user_id
           return next();
         })
-        res.locals.verifiedUser = rows;
-        return next();
       }
       else {
         res.locals.validUsername = false;
+        res.locals.validPassword = false;
         return next();
       }
     });

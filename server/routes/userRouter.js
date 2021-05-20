@@ -15,6 +15,7 @@ userRouter.post('/createUser', sessionController.setCookie, userController.creat
 // set cookie -> check if logged In -> verify user (if not loggedin) -> start session (or renew session) - set (or renew) SSID cookie
 userRouter.get('/verifyUser', sessionController.setCookie, userController.verifyUser, (req, res) => {
   console.log("Reach Verify User end of middleware")
+  console.log('statements', res.locals.validUsername, res.locals.validPassword);
   if (res.locals.validUsername === false) {
     res.status(200).send('User does not exist!!')
   }
