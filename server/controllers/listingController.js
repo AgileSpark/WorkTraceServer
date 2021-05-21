@@ -68,11 +68,18 @@ listingController.updateStatus = (req, res, next) => {
 };
 
 listingController.removeListing = (req, res, next) => {
-  const {listing_id} = req.body
-  console.log('Inputs', listing_id)
+  const {listings} = req.body;
+  console.log('Inputs', listings);
+  const listingKeys = Object.keys(listings);
+  console.log('ListingKeys', listingKeys);
+  let listingsAssembled = '';
+  for (const element of listingKeys) listingsToDelete += element + ', ';
+  listingsToDelete = listingsAssembled.slice(0, listingsAssembled.length - 2);
+  console.log(listingsToDelete);
+
   const removeListingQuery = `
   DELETE FROM Listings
-  WHERE listing_id=${listing_id}
+  WHERE listing_id IN (${listingsToDelete})
   RETURNING *
   `
   try {
