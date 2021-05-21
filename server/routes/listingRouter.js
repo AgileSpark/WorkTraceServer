@@ -30,7 +30,7 @@ listingRouter.post('/updateStatus', listingController.updateStatus, (req, res) =
   }
 })
 
-listingRouter.post('/removeListing', listingController.removeListing, (req, res) => {
+listingRouter.delete('/removeListing', listingController.removeListing, (req, res) => {
   console.log('Made it to the updateListing route!!')
   if (res.locals.removedListing) {
     res.status(200).json({userListings: res.locals.removedListing})
