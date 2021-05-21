@@ -71,7 +71,6 @@ listingController.removeListing = (req, res, next) => {
   const {listings} = req.body;
   console.log('Inputs', listings);
   const listingKeys = Object.keys(listings);
-  res.locals.removedListing = [];
 
   for (const element of listingKeys) {
     const deleteId = Number(element);
@@ -83,9 +82,6 @@ listingController.removeListing = (req, res, next) => {
     try {
       db.query(removeListingQuery, (err, result) => {
         if (result) {
-          const {rows} = result;
-          console.log('Row data', rows[0])
-          res.locals.removedListings.push(rows[0])
           if (listingKeys[listingKeys.length - 1] === element) return next();
         }
       }) 
