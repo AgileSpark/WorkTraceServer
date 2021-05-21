@@ -71,28 +71,26 @@ listingController.removeListing = (req, res, next) => {
   const {listings} = req.body;
   console.log('Inputs', listings);
   const listingKeys = Object.keys(listings);
-  console.log('ListingKeys', listingKeys);
-  let listingsAssembled = '';
-  for (const element of listingKeys) listingsToDelete += element + ', ';
-  listingsToDelete = listingsAssembled.slice(0, listingsAssembled.length - 2);
-  console.log(listingsToDelete);
+  res.locals.removedListing = [];
 
-  const removeListingQuery = `
-  DELETE FROM Listings
-  WHERE listing_id IN (${listingsToDelete})
-  RETURNING *
-  `
-  try {
-    db.query(removeListingQuery, (err, result) => {
-      if (result) {
-        const {rows} = result;
-        console.log('Row data', rows[0])
-        res.locals.removedListing = rows[0];
-        return next();
-      }
-      else return next();
-    });
-  } catch (err) {next(err);}
+  for (const element of listingKeys) {
+    const deleteId = Number(element);
+    const removeListingQuery = `
+    DELETE FROM Listings
+    WHERE listing_id=(${deleteId})
+    RETURNING *
+    `
+    try {
+      db.query(removeListingQuery, (err, result) => {
+        if (result) {
+          const {rows} = result;
+          console.log('Row data', rows[0])
+          res.locals.removedListings.push(rows[0])
+          if (listingKeys[listingKeys.length - 1] === element) return next();
+        }
+      }) 
+    } catch (err) {next(err);};
+  }
 };
 
 module.exports  = listingController;
